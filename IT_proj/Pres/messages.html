@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .message-board {
+            margin: 20px;
+        }
+        .message {
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+        .message h4 {
+            margin: 0;
+        }
+        .message p {
+            margin: 5px 0;
+        }
+        .form-container {
+            margin-top: 30px;
+        }
+        .form-container textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .form-container input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="message-board">
+        <h2>Messages</h2>
+        
+        <!-- Messages will be displayed here -->
+        <div id="messages">
+            <?php include('read_messages.php'); ?>
+        </div>
+
+        <div class="form-container">
+            <h3>Post a New Message</h3>
+            <form action="write_message.php" method="post">
+                <textarea name="message" placeholder="Write your message here..." required></textarea><br>
+                <input type="submit" value="Post Message">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

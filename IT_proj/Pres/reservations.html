@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Make a Reservation</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="yachts.html">Yachts</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="reservations.html">Reservations</a></li>
+                <li><a href="messages.html">Messages</a></li>
+                <li><a href="admin.html">Admin Panel</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Reserve Your Yacht</h2>
+            <form action="submit_reservation.php" method="POST">
+                <label for="user">User ID:</label>
+                <input type="number" id="user" name="user" required>
+                <label for="yacht">Yacht ID:</label>
+                <input type="number" id="yacht" name="yacht" required>
+                <label for="from">From:</label>
+                <input type="datetime-local" id="from" name="from" required>
+                <label for="to">To:</label>
+                <input type="datetime-local" id="to" name="to" required>
+                <button type="submit">Reserve</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Yacht Rental Platform. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

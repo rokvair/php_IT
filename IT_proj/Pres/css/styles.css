@@ -1,0 +1,107 @@
+/* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container that holds everything */
+.container {
+    width: 80%;
+    max-width: 900px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Title */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Message board container */
+.message-board {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-height: 500px;
+}
+
+/* Individual messages */
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.message.sender {
+    background-color: #d1e7fd;
+    text-align: left;
+}
+
+.message.recipient {
+    background-color: #e2f3db;
+    text-align: right;
+}
+
+/* Message input form container */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+/* Textarea for message input */
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+    margin-bottom: 10px;
+}
+
+/* Submit button */
+.form-container input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.form-container input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Filter messages form container */
+.filter-container {
+    margin-bottom: 20px;
+}
+
+/* Styling for filter inputs and submit button */
+.filter-container select,
+.filter-container input[type="submit"] {
+    padding: 8px;
+    font-size: 16px;
+    margin: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+
