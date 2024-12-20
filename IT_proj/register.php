@@ -1,7 +1,6 @@
 <?php
 // Include the database connection and header
 require_once 'config.php';
-require_once 'header.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     // Get form input and sanitize it
@@ -40,24 +39,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 }
 ?>
 
-<!-- Registration Form -->
-<form method="POST">
-    <label for="name">Name:</label>
-    <input type="text" name="name" id="name" required>
+<!-- Include the header -->
+<?php include('header.php'); ?>
 
-    <label for="email">Email:</label>
-    <input type="email" name="email" id="email" required>
+<!-- Registration Page HTML -->
+<main>
+    <!-- Registration Form -->
+    <h2>Register</h2>
 
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required>
+    <!-- Display error message if there's any -->
+    <?php if (!empty($error_message)): ?>
+        <p style="color: red;"><?php echo $error_message; ?></p>
+    <?php endif; ?>
 
-    <button type="submit" name="register">Register</button>
-</form>
+    <form method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" name="name" id="name" required><br><br>
 
-<?php
-// Include the footer
-include('footer.php');
-?>
+        <label for="email">Email:</label><br>
+        <input type="email" name="email" id="email" required><br><br>
 
+        <label for="password">Password:</label><br>
+        <input type="password" name="password" id="password" required><br><br>
 
+        <button type="submit" name="register">Register</button>
+    </form>
+</main>
 
+<!-- Include the footer -->
+<?php include('footer.php'); ?>

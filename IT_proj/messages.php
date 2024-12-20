@@ -137,8 +137,25 @@ try {
     <?php else: ?>
         <?php foreach ($messages as $message): ?>
             <div class="message">
-                <p><strong>From:</strong> <?php echo htmlspecialchars($message['siuntejo_id']); ?> 
-                <strong>To:</strong> <?php echo htmlspecialchars($message['gavejo_id']); ?></p>
+                <p><strong>From:</strong> 
+                <?php
+                // If the user is owner 42, display the ID instead of the name
+                if ($is_owner_42) {
+                    echo htmlspecialchars($message['siuntejo_id']);
+                } else {
+                    echo htmlspecialchars(getUserName($message['siuntejo_id'], $pdo)); // Function to get the sender's name
+                }
+                ?> 
+                <strong>To:</strong> 
+                <?php
+                // If the user is owner 42, display the ID instead of the name
+                if ($is_owner_42) {
+                    echo htmlspecialchars($message['gavejo_id']);
+                } else {
+                    echo htmlspecialchars(getUserName($message['gavejo_id'], $pdo)); // Function to get the receiver's name
+                }
+                ?>
+                </p>
                 <p><strong>Sent:</strong> <?php echo htmlspecialchars($message['created']); ?></p>
                 <p><strong>Message:</strong> <?php echo nl2br(htmlspecialchars($message['message'])); ?></p>
                 <hr>
@@ -157,7 +174,7 @@ try {
                 <option value="">Select Recipient</option>
                 <!-- Display valid recipients based on the user's role -->
                 <?php foreach ($recipients as $recipient): ?>
-                    <option value="<?php echo $recipient['id']; ?>"><?php echo htmlspecialchars($recipient['id']); ?></option>
+                    <option value="<?php echo $recipient['id']; ?>"><?php echo htmlspecialchars($recipient['varpav']); ?></option>
                 <?php endforeach; ?>
             </select><br><br>
 
@@ -172,6 +189,16 @@ try {
 <?php
 // Include footer if necessary
 // include('footer.php');
+
+// Helper function to get user names
+function getUserName($user_id, $pdo) {
+    $sql = "SELECT varpav FROM naudotojai WHERE id = :user_id UNION SELECT varpav FROM nuomotojai WHERE id = :user_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? $result['varpav'] : 'Unknown';
+}
 ?>
 </body>
 </html>

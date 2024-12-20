@@ -1,1 +1,10 @@
+INSTALIACIJA
+1. XAMPP
+2. PASILEISTI SERVERI SU APACHE IR MYSQL
+3. IMPORT SQL
+4. CHECK CONFIG.PHP for connection details and modify as needed
+5. RUN APP
+6. ENjoy
+
+
 # php_IT
