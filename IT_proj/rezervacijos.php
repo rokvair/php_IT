@@ -6,7 +6,6 @@ include('config.php');
 include('header.php');
 
 // Start the session
-session_start();
 
 // Ensure the user is logged in, otherwise redirect to login
 if (!isset($_SESSION['user_id'])) {

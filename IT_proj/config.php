@@ -4,8 +4,8 @@
 // Database connection details
 $host = 'localhost';  // Your database host
 $dbname = 'laivai';   // Your database name
-$username = 'stud';    // Your database username
-$password = 'stud';        // Your database password
+$username = 'root';    // Your database username
+$password = '';        // Your database password
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

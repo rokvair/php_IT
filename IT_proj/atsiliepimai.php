@@ -1,46 +1,69 @@
 <?php
-// Include the header
+// Include the header and config.php for database connection
 include('header.php');
+include('config.php');
 
-// Database connection setup
-$host = 'localhost'; // Database host
-$dbname = 'laivai'; // Database name
-$username = 'stud'; // Database username
-$password = 'stud'; // Database password
-
-// Initialize the PDO connection
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
+// Ensure the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
 }
+
+$user_id = $_SESSION['user_id']; // Get the logged-in user's ID
 
 // Handle review submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_id = $_POST['user_id'];
-    $yacht_owner_id = $_POST['yacht_owner_id'];
-    $review_text = $_POST['review_text'];
-    $rating = $_POST['rating'];
+    if ($user_id < 1000) {
+        // Restrict review submission to users only
+        $error_message = "Only users can submit reviews.";
+    } else {
+        // Get the necessary data from the form
+        $yacht_owner_name = $_POST['yacht_owner_name'];
+        $review_text = $_POST['review_text'];
+        $rating = $_POST['rating'];
 
-    // Insert the review into the database
-    try {
-        $sql = "INSERT INTO atsiliepimai (nuomotojas, naudotojas, tekstas, ivertinimas) 
-                VALUES (:yacht_owner_id, :user_id, :review_text, :rating)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':yacht_owner_id', $yacht_owner_id);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':review_text', $review_text);
-        $stmt->bindParam(':rating', $rating);
+        // Get the corresponding yacht owner ID based on the 'varpav' (owner name)
+        try {
+            $sql = "SELECT id FROM nuomotojai WHERE varpav = :yacht_owner_name";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':yacht_owner_name', $yacht_owner_name);
+            $stmt->execute();
+            $yacht_owner = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($stmt->execute()) {
-            $success_message = "Your review has been submitted successfully!";
-        } else {
-            $error_message = "There was an error submitting your review.";
+            if ($yacht_owner) {
+                $yacht_owner_id = $yacht_owner['id'];
+
+                // Insert the review into the 'atsiliepimai' table
+                $sql = "INSERT INTO atsiliepimai (nuomotojas, naudotojas, tekstas, ivertinimas) 
+                        VALUES (:yacht_owner_id, :user_id, :review_text, :rating)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':yacht_owner_id', $yacht_owner_id);
+                $stmt->bindParam(':user_id', $user_id); // Use the logged-in user's ID
+                $stmt->bindParam(':review_text', $review_text);
+                $stmt->bindParam(':rating', $rating);
+
+                if ($stmt->execute()) {
+                    $success_message = "Your review has been submitted successfully!";
+                } else {
+                    $error_message = "There was an error submitting your review.";
+                }
+            } else {
+                $error_message = "Yacht owner not found.";
+            }
+        } catch (PDOException $e) {
+            $error_message = "Error: " . $e->getMessage();
         }
-    } catch (PDOException $e) {
-        $error_message = "Error: " . $e->getMessage();
     }
+}
+
+// Fetch yacht owner names for the dropdown (from the 'nuomotojai' table)
+try {
+    $sql = "SELECT varpav FROM nuomotojai";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $yacht_owners = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $error_message = "Error fetching yacht owners: " . $e->getMessage();
 }
 
 // Fetch reviews from the database
@@ -79,23 +102,31 @@ try {
         <?php endforeach; ?>
     </div>
 
-    <!-- Review Submission Form -->
-    <h2>Leave a Review</h2>
-    <form action="" method="POST">
-        <label for="user_id">Your User ID:</label><br>
-        <input type="number" id="user_id" name="user_id" required><br><br>
+    <!-- Review Submission Form (only visible to users) -->
+    <?php if ($user_id >= 1000): ?> <!-- Only users can submit reviews -->
+        <h2>Leave a Review</h2>
+        <form action="" method="POST">
+            <label for="yacht_owner_name">Yacht Owner Name:</label><br>
+            <select id="yacht_owner_name" name="yacht_owner_name" required>
+                <option value="">Select a yacht owner</option>
+                <?php foreach ($yacht_owners as $owner): ?>
+                    <option value="<?php echo htmlspecialchars($owner['varpav']); ?>">
+                        <?php echo htmlspecialchars($owner['varpav']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select><br><br>
 
-        <label for="yacht_owner_id">Yacht Owner ID:</label><br>
-        <input type="number" id="yacht_owner_id" name="yacht_owner_id" required><br><br>
+            <label for="rating">Rating (1-5):</label><br>
+            <input type="number" id="rating" name="rating" min="1" max="5" required><br><br>
 
-        <label for="rating">Rating (1-5):</label><br>
-        <input type="number" id="rating" name="rating" min="1" max="5" required><br><br>
+            <label for="review_text">Review:</label><br>
+            <textarea id="review_text" name="review_text" rows="4" required></textarea><br><br>
 
-        <label for="review_text">Review:</label><br>
-        <textarea id="review_text" name="review_text" rows="4" required></textarea><br><br>
-
-        <input type="submit" value="Submit Review">
-    </form>
+            <input type="submit" value="Submit Review">
+        </form>
+    <?php else: ?>
+        <p style="color: red;">Only users can submit reviews. Owners are not allowed to add reviews.</p>
+    <?php endif; ?>
 </section>
 
 <?php
@@ -104,6 +135,3 @@ try {
 ?>
 </body>
 </html>
-
-
-

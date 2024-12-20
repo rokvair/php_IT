@@ -10,8 +10,8 @@ function postMessage() {
 
         // Database connection
         $servername = "localhost";
-        $username = "stud"; // replace with your username
-        $password = "stud";     // replace with your password
+        $username = "root"; // replace with your username
+        $password = "";     // replace with your password
         $dbname = "laivai"; // replace with your database name
 
         $conn = new mysqli($servername, $username, $password, $dbname);

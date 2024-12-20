@@ -1,11 +1,13 @@
 <?php
+// login_owner.php
+
 // Include the config.php file which contains the database connection
 include('config.php');
 
 // Start the session
 session_start();
 
-// Initialize error message variables
+// Initialize error message variable
 $error_message = '';
 
 // Check if the form is submitted
@@ -14,32 +16,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Check if the user exists in the database
+    // Check if the user exists in the 'nuomotojai' table (owners)
     try {
-        // Prepare the SQL query to check if the email exists in the 'naudotojai' table
-        $sql = "SELECT * FROM naudotojai WHERE email = :email";  // Use 'email' column to find the user
+        $sql = "SELECT * FROM nuomotojai WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
-        // Check if a user with that email exists
         if ($stmt->rowCount() > 0) {
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $owner = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Verify the password
-            if (password_verify($password, $user['password'])) {
-                // Store user ID and email in session
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_email'] = $user['email'];  // Store email in session instead of 'vardas'
+            // Verify password
+            if (password_verify($password, $owner['password'])) {
+                $_SESSION['user_id'] = $owner['id'];
+                $_SESSION['user_email'] = $owner['email']; 
+                $_SESSION['user_role'] = 'owner';
+                // Store email in session
 
-                // Redirect to index.php after successful login
-                header('Location: index.php');
+                header('Location: owner_dashboard.php');
                 exit;
             } else {
                 $error_message = 'Invalid password.';
             }
         } else {
-            $error_message = 'User not found.';
+            $error_message = 'Owner not found.';
         }
     } catch (PDOException $e) {
         $error_message = "Database error: " . $e->getMessage();
@@ -50,14 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- Include the header -->
 <?php include('header.php'); ?>
 
-<!-- HTML for the login form -->
 <main>
     <!-- Display error message if there's any -->
     <?php if (!empty($error_message)): ?>
         <p style="color: red;"><?php echo $error_message; ?></p>
     <?php endif; ?>
 
-    <!-- Login Form -->
+    <!-- Owner Login Form -->
     <form method="POST" action="">
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br><br>

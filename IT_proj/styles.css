@@ -3,11 +3,52 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    line-height: 1.6;
+    background-color: #f4f4f9;
     color: #333;
 }
 
+/* Anchor link styles */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 /* Header */
+header {
+    background-color: #007bff;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header nav ul {
+    list-style-type: none;
+    text-align: center;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background 0.3s ease;
+}
+
+header nav ul li a:hover {
+    background-color: #0056b3;
+}
+
+/* Header titles */
 h1 {
     text-align: center;
     padding: 20px 0;
@@ -15,6 +56,138 @@ h1 {
     color: white;
     margin-bottom: 20px;
     font-size: 2rem;
+}
+
+/* Button styles */
+.button, .btn, .login-button, .logout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.button {
+    background-color: #007bff;
+    font-size: 16px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.btn {
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #218838;
+}
+
+.login-button {
+    background-color: #007bff;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+.logout-button {
+    background-color: #ff0000;
+    color: white;
+    text-decoration: none;
+}
+
+.logout-button:hover {
+    background-color: #cc0000;
+}
+
+/* Hero section */
+.hero {
+    background: url('hero-bg.jpg') no-repeat center center/cover;
+    color: #fff;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+/* Introduction section */
+.introduction {
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    margin: 20px auto;
+}
+
+.introduction h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+/* Featured Yachts */
+.featured-yachts {
+    background-color: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+}
+
+.featured-yachts h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.yacht-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.yacht {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: left;
+}
+
+.yacht h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.yacht p {
+    margin-bottom: 10px;
+}
+
+/* Call-to-action */
+.call-to-action {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 30px;
+}
+
+.call-to-action h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.call-to-action p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
 }
 
 /* Yacht container */
@@ -64,23 +237,6 @@ h1 {
     margin: 10px 0;
 }
 
-/* Reserve button */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-top: 10px;
-    background-color: #28a745;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #218838;
-}
-
 /* No yachts message */
 p.no-yachts {
     text-align: center;
@@ -101,5 +257,153 @@ p.no-yachts {
     }
 }
 
+/* Additional layout for pages */
+main {
+    padding: 20px;
+    margin-top: 60px; /* Space for fixed header */
+}
 
+/* Section Styles */
+section {
+    padding: 20px;
+    margin-bottom: 20px;
+}
 
+/* Message Board Styling */
+#messages {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#messages .message {
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+#send_message {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#send_message form {
+    display: flex;
+    flex-direction: column;
+}
+
+#send_message label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+#send_message textarea,
+#send_message select {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+#send_message input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#send_message input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+#owner_dashboard {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.yachts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.yacht {
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+.yacht h3 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+    color: #333;
+}
+.yacht p {
+    margin: 5px 0;
+    color: #555;
+}
+.yacht img {
+    display: block;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+.yacht .increase-price-btn, .yacht .edit-btn, .yacht .delete-btn {
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+.increase-price-btn {
+    background-color: #28a745;
+}
+.edit-btn {
+    background-color: #007bff;
+}
+.delete-btn {
+    background-color: #dc3545;
+}
+.increase-price-btn:hover {
+    background-color: #218838;
+}
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+.delete-btn:hover {
+    background-color: #c82333;
+}.add-yacht-btn-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.add-yacht-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.add-yacht-btn:hover {
+    background-color: #0056b3;
+}
