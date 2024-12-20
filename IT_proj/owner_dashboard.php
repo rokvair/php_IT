@@ -89,15 +89,9 @@ try {
 <section id="owner_dashboard">
     <h2>Your Yachts</h2>
     
-    
-    <!-- Button to add a new yacht -->
-    <div class="add-yacht-btn-container">
-        <a href="add_yachts.php" class="add-yacht-btn">Add a New Yacht</a>
-    </div>
-    
     <!-- Check if the owner has yachts -->
     <?php if (empty($yachts)): ?>
-        <p>You have no yachts posted. <a href="add_yachts.php">Add a New Yacht</a></p>
+        <p>You have no yachts posted. <a href="add_yacht.php">Add a New Yacht</a></p>
     <?php else: ?>
         <div class="yachts-list">
             <?php foreach ($yachts as $yacht): ?>
@@ -105,10 +99,18 @@ try {
                     <h3><?php echo htmlspecialchars($yacht['pavadinimas']); ?></h3>
                     <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($yacht['aprasas'])); ?></p>
                     <p><strong>Price:</strong> €<?php echo number_format($yacht['kaina'], 2); ?></p>
-                    <p><strong>Photo:</strong> <img src="<?php echo htmlspecialchars($yacht['foto']); ?>" alt="Yacht photo" width="100"></p>
+                    <p><strong>Photos:</strong></p>
+                    <div class="yacht-photos">
+                        <?php 
+                        $photos = explode(',', $yacht['foto']); // Split the photo URLs
+                        foreach ($photos as $photo): 
+                        ?>
+                            <img src="<?php echo htmlspecialchars(trim($photo)); ?>" alt="Yacht photo" width="100">
+                        <?php endforeach; ?>
+                    </div>
 
                     <!-- Button to increase the price by a certain percentage -->
-                    <a href="owner_dashboard.php?increase_price=<?php echo $yacht['id']; ?>" class="increase-price-btn">Pakelti kainą per 10% sezonui</a>
+                    <a href="owner_dashboard.php?increase_price=<?php echo $yacht['id']; ?>" class="increase-price-btn">Increase Price by 10%</a>
                     <a href="edit_yacht.php?id=<?php echo $yacht['id']; ?>" class="edit-btn">Edit Yacht</a>
 
                     <!-- Button to delete the yacht -->

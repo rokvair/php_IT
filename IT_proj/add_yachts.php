@@ -16,17 +16,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_yacht'])) {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $price = $_POST['price'];
-    $photo = $_POST['photo'];
+    $photos = $_POST['photos']; // Accept multiple photo URLs
 
     try {
         // Insert the new yacht into the database
         $sql = "INSERT INTO jachtos (pavadinimas, aprasas, kaina, foto, savId) 
-                VALUES (:name, :description, :price, :photo, :user_id)";
+                VALUES (:name, :description, :price, :photos, :user_id)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':price', $price);
-        $stmt->bindParam(':photo', $photo);
+        $stmt->bindParam(':photos', $photos);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
 
@@ -58,8 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_yacht'])) {
         <label for="price">Price (€):</label><br>
         <input type="number" id="price" name="price" required><br><br>
 
-        <label for="photo">Photo URL:</label><br>
-        <input type="text" id="photo" name="photo" required><br><br>
+        <label for="photos">Photo URLs (separate with commas):</label><br>
+        <input type="text" id="photos" name="photos" required><br><br>
 
         <input type="submit" name="add_yacht" value="Add Yacht">
     </form>

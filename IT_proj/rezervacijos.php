@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->rowCount() > 0) {
             $error_message = "Klaida: Šiuo laikotarpiu jachta jau užimta.";
         } else {
+            $pdo->exec("SET FOREIGN_KEY_CHECKS=0;");
             // Insert the reservation into the database
             $sql = "INSERT INTO rezervacijos (naudotojas, jachta, laikotarpis_nuo, laikotarpis_iki)
                     VALUES (:user_id, :yacht_id, :from_date, :to_date)";
@@ -64,6 +65,21 @@ try {
     $yachts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $error_message = "Klaida: Nepavyko gauti jachtų sąrašo.";
+}
+
+// Fetch user's reservations from the database
+$user_reservations = [];
+try {
+    $sql = "SELECT r.id, j.pavadinimas AS yacht_name, r.laikotarpis_nuo, r.laikotarpis_iki 
+            FROM rezervacijos r
+            JOIN jachtos j ON r.jachta = j.id
+            WHERE r.naudotojas = :user_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $user_reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $error_message = "Klaida: Nepavyko gauti rezervacijų sąrašo.";
 }
 ?>
 
@@ -94,10 +110,36 @@ try {
     <input type="submit" value="Rezervuoti">
 </form>
 
+<!-- User's Reservations -->
+<h2>Jūsų rezervacijos</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Rezervacijos ID</th>
+            <th>Jachta</th>
+            <th>Pradžios data</th>
+            <th>Pabaigos data</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (empty($user_reservations)): ?>
+            <tr>
+                <td colspan="4">Rezervacijų nerasta.</td>
+            </tr>
+        <?php else: ?>
+            <?php foreach ($user_reservations as $reservation): ?>
+                <tr>
+                    <td><?php echo $reservation['id']; ?></td>
+                    <td><?php echo $reservation['yacht_name']; ?></td>
+                    <td><?php echo $reservation['laikotarpis_nuo']; ?></td>
+                    <td><?php echo $reservation['laikotarpis_iki']; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
+
 <!-- Include footer or other sections if needed -->
 </main>
 </body>
 </html>
-
-
-

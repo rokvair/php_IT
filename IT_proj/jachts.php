@@ -10,7 +10,7 @@ try {
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo "<p>Error fetching yachts: " . $e->getMessage() . "</p>";
+    echo "<p>Error fetching yachts: " . htmlspecialchars($e->getMessage()) . "</p>";
 }
 ?>
 <!DOCTYPE html>
@@ -39,10 +39,19 @@ try {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .yacht-card img {
-            width: 100%;
-            height: 200px;
+        .yacht-images {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .yacht-images img {
+            width: 100px;
+            height: 100px;
             object-fit: cover;
+            border-radius: 4px;
         }
 
         .yacht-card h2 {
@@ -79,8 +88,19 @@ try {
         <?php if (count($result) > 0): ?>
             <?php foreach ($result as $row): ?>
                 <div class="yacht-card">
-                    <!-- Image and Yacht Details -->
-                    <img src="uploads/<?= htmlspecialchars($row['foto']) ?>" alt="<?= htmlspecialchars($row['pavadinimas']) ?>" class="yacht-image">
+                    <!-- Display multiple images -->
+                    <div class="yacht-images">
+                        <?php 
+                        $photos = explode(',', $row['foto']); // Split the 'foto' field by commas
+                        foreach ($photos as $photo): 
+                            $photo = trim($photo); // Remove extra spaces
+                            if ($photo): // Ensure the photo URL is not empty
+                        ?>
+                            <img src="<?= htmlspecialchars($photo) ?>" 
+                                 alt="<?= htmlspecialchars($row['pavadinimas']) ?>">
+                        <?php endif; endforeach; ?>
+                    </div>
+                    <!-- Yacht Details -->
                     <h2><?= htmlspecialchars($row['pavadinimas']) ?></h2>
                     <p><strong>Price:</strong> €<?= number_format($row['kaina'], 2) ?>/day</p>
                     <p><?= htmlspecialchars($row['aprasas']) ?></p>
