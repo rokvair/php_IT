@@ -35,21 +35,21 @@ try {
     $stmt->execute();
     $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $error_message = "Error fetching messages: " . $e->getMessage();
+    $error_message = "Klaida gaunant pranešimus: " . $e->getMessage();
 }
 
 // Handle message sending form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && isset($_POST['receiver_id'])) {
     if ($is_owner_42) {
         // Owner 42 cannot send messages, so we just skip the message sending
-        $error_message = "You do not have permission to send messages.";
+        $error_message = "Jūs neturite teisės siųsti pranešimų.";
     } else {
         $message = trim($_POST['message']);
         $receiver_id = (int) $_POST['receiver_id'];
 
         // Ensure the receiver_id is valid
         if ($receiver_id <= 0 || $receiver_id == $user_id) {
-            $error_message = "Invalid recipient.";
+            $error_message = "Netinkamas gavėjas.";
         } else {
             // Validate the recipient based on the user type
             if ($is_owner) {
@@ -62,12 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && isset($
                     }
                 }
                 if (!$valid_recipient) {
-                    $error_message = "You can only message users who have contacted you.";
+                    $error_message = "Jūs galite susisiekti tik su vartotojais, kurie jums parašė.";
                 }
             } else {
                 // Users can send a message to any owner
                 if ($receiver_id >= 1000) {
-                    $error_message = "You can only message owners.";
+                    $error_message = "Jūs galite susisiekti tik su savininkais.";
                 }
             }
 
@@ -81,9 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && isset($
                     $stmt->bindParam(':message', $message);
                     $stmt->execute();
 
-                    $success_message = "Message sent successfully!";
+                    $success_message = "Pranešimas sėkmingai išsiųstas!";
                 } catch (PDOException $e) {
-                    $error_message = "Error sending message: " . $e->getMessage();
+                    $error_message = "Klaida siunčiant pranešimą: " . $e->getMessage();
                 }
             }
         }
@@ -115,7 +115,7 @@ try {
         $recipients = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 } catch (PDOException $e) {
-    $error_message = "Error fetching users and owners: " . $e->getMessage();
+    $error_message = "Klaida gaunant naudotojus ir savininkus: " . $e->getMessage();
 }
 
 ?>
@@ -130,14 +130,14 @@ try {
 
 <!-- Display Messages -->
 <section id="messages">
-    <h2>Messages</h2>
+    <h2>Pranešimai</h2>
 
     <?php if (empty($messages)): ?>
-        <p>No messages available.</p>
+        <p>Pranešimų nėra.</p>
     <?php else: ?>
         <?php foreach ($messages as $message): ?>
             <div class="message">
-                <p><strong>From:</strong> 
+                <p><strong>Nuo:</strong> 
                 <?php
                 // If the user is owner 42, display the ID instead of the name
                 if ($is_owner_42) {
@@ -146,7 +146,7 @@ try {
                     echo htmlspecialchars(getUserName($message['siuntejo_id'], $pdo)); // Function to get the sender's name
                 }
                 ?> 
-                <strong>To:</strong> 
+                <strong>Kam:</strong> 
                 <?php
                 // If the user is owner 42, display the ID instead of the name
                 if ($is_owner_42) {
@@ -156,8 +156,8 @@ try {
                 }
                 ?>
                 </p>
-                <p><strong>Sent:</strong> <?php echo htmlspecialchars($message['created']); ?></p>
-                <p><strong>Message:</strong> <?php echo nl2br(htmlspecialchars($message['message'])); ?></p>
+                <p><strong>Data:</strong> <?php echo htmlspecialchars($message['created']); ?></p>
+                <p><strong>Pranešimas:</strong> <?php echo nl2br(htmlspecialchars($message['message'])); ?></p>
                 <hr>
             </div>
         <?php endforeach; ?>
@@ -167,21 +167,21 @@ try {
 <!-- Message Sending Form (Hidden for owner 42) -->
 <?php if (!$is_owner_42): ?>
     <section id="send_message">
-        <h2>Send a Message</h2>
+        <h2>Siųsti pranešimą</h2>
         <form action="" method="POST">
-            <label for="receiver_id">Select Recipient:</label><br>
+            <label for="receiver_id">Pasirinkti gavėją:</label><br>
             <select id="receiver_id" name="receiver_id" required>
-                <option value="">Select Recipient</option>
+                <option value="">Pasirinkti gavėją</option>
                 <!-- Display valid recipients based on the user's role -->
                 <?php foreach ($recipients as $recipient): ?>
                     <option value="<?php echo $recipient['id']; ?>"><?php echo htmlspecialchars($recipient['varpav']); ?></option>
                 <?php endforeach; ?>
             </select><br><br>
 
-            <label for="message">Message:</label><br>
+            <label for="message">Pranešimas:</label><br>
             <textarea id="message" name="message" rows="4" required></textarea><br><br>
 
-            <input type="submit" value="Send Message">
+            <input type="submit" value="Siųsti pranešimą">
         </form>
     </section>
 <?php endif; ?>
@@ -197,7 +197,7 @@ function getUserName($user_id, $pdo) {
     $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? $result['varpav'] : 'Unknown';
+    return $result ? $result['varpav'] : 'Nežinomas';
 }
 ?>
 </body>

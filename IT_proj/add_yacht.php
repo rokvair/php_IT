@@ -1,30 +1,30 @@
 <?php
 // add_yacht.php
 
-// Include database connection
+// Įtraukti duomenų bazės ryšį
 include('config.php');
 
-// Start the session
+// Pradėti sesiją
 session_start();
 
-// Check if the user is logged in as an owner
+// Patikrinti, ar vartotojas yra prisijungęs kaip savininkas
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login_owner.php'); // Redirect to owner login if not logged in
+    header('Location: login_owner.php'); // Nukreipti į savininko prisijungimą, jei neprisijungęs
     exit;
 }
 
 $error_message = '';
 
-// Handle the form submission
+// Tvarkyti formos pateikimą
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve and sanitize user inputs
+    // Gauti ir išvalyti vartotojo įvestis
     $pavadinimas = $_POST['pavadinimas'];
     $foto = $_POST['foto'];
     $kaina = $_POST['kaina'];
     $aprasas = $_POST['aprasas'];
-    $savId = $_SESSION['user_id']; // Get the logged-in owner's ID
+    $savId = $_SESSION['user_id']; // Gauti prisijungusio savininko ID
 
-    // Insert the new yacht into the database
+    // Įrašyti naują jachtą į duomenų bazę
     try {
         $sql = "INSERT INTO jachtos (pavadinimas, foto, kaina, savId, aprasas) VALUES (:pavadinimas, :foto, :kaina, :savId, :aprasas)";
         $stmt = $pdo->prepare($sql);
@@ -36,41 +36,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt->execute();
 
-        // Redirect to the owner's dashboard after adding the yacht
+        // Nukreipti į savininko skydelį po jachtos pridėjimo
         header('Location: owner_dashboard.php');
         exit;
     } catch (PDOException $e) {
-        $error_message = "Error: " . $e->getMessage();
+        $error_message = "Klaida: " . $e->getMessage();
     }
 }
 
 ?>
 
-<!-- Include the header -->
+<!-- Įtraukti antraštę -->
 <?php include('header.php'); ?>
 
 <main>
-    <h1>Add a New Yacht</h1>
+    <h1>Pridėti Naują Jachtą</h1>
 
-    <!-- Display error message if there is one -->
+    <!-- Rodyti klaidos pranešimą, jei jis yra -->
     <?php if ($error_message): ?>
         <p style="color: red;"><?php echo $error_message; ?></p>
     <?php endif; ?>
 
     <form method="POST" action="add_yacht.php">
-        <label for="pavadinimas">Yacht Name:</label><br>
+        <label for="pavadinimas">Jachtos Pavadinimas:</label><br>
         <input type="text" id="pavadinimas" name="pavadinimas" required><br><br>
 
-        <label for="foto">Photo (Image Filename):</label><br>
+        <label for="foto">Nuotrauka (Failo Pavadinimas):</label><br>
         <input type="text" id="foto" name="foto" required><br><br>
 
-        <label for="kaina">Price:</label><br>
+        <label for="kaina">Kaina:</label><br>
         <input type="number" step="0.01" id="kaina" name="kaina" required><br><br>
 
-        <label for="aprasas">Description:</label><br>
+        <label for="aprasas">Aprašas:</label><br>
         <textarea id="aprasas" name="aprasas" required></textarea><br><br>
 
-        <input type="submit" value="Add Yacht">
+        <input type="submit" value="Pridėti Jachtą">
     </form>
 </main>
 

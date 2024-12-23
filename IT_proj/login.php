@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- HTML for the login form -->
 <main>
+<h2>Prisijungti</h2>
     <!-- Display error message if there's any -->
     <?php if (!empty($error_message)): ?>
         <p style="color: red;"><?php echo $error_message; ?></p>
@@ -62,10 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br><br>
 
-        <label for="password">Password:</label><br>
+        <label for="password">Slaptažodis:</label><br>
         <input type="password" id="password" name="password" required><br><br>
 
-        <input type="submit" value="Login">
+        <input type="submit" value="Prisijungti">
     </form>
 </main>
 

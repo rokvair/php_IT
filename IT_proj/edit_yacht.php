@@ -13,7 +13,7 @@ $user_id = $_SESSION['user_id']; // Get the logged-in user's ID
 
 // Check if the yacht ID is provided
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    echo "Invalid yacht ID.";
+    echo "Netinkamas jachtos ID.";
     exit;
 }
 
@@ -28,11 +28,11 @@ try {
     $stmt->execute();
     $yacht = $stmt->fetch(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $error_message = "Error fetching yacht: " . $e->getMessage();
+    $error_message = "Klaida gaunant jachtą: " . $e->getMessage();
 }
 
 if (!$yacht) {
-    echo "Yacht not found or you do not have permission to edit this yacht.";
+    echo "Jachta nerasta arba neturite teisės redaguoti šios jachtos.";
     exit;
 }
 
@@ -55,12 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':user_id', $user_id);
 
         if ($stmt->execute()) {
-            $success_message = "Yacht updated successfully!";
+            $success_message = "Jachta sėkmingai atnaujinta!";
         } else {
-            $error_message = "Error updating yacht.";
+            $error_message = "Klaida atnaujinant jachtą.";
         }
     } catch (PDOException $e) {
-        $error_message = "Error: " . $e->getMessage();
+        $error_message = "Klaida: " . $e->getMessage();
     }
 }
 ?>
@@ -75,22 +75,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- Edit Yacht Form -->
 <section id="edit_yacht">
-    <h2>Edit Yacht</h2>
+    <h2>Redaguoti Jachtą</h2>
 
     <form action="" method="POST">
-        <label for="pavadinimas">Yacht Name:</label><br>
+        <label for="pavadinimas">Jachtos pavadinimas:</label><br>
         <input type="text" id="pavadinimas" name="pavadinimas" value="<?php echo htmlspecialchars($yacht['pavadinimas']); ?>" required><br><br>
 
-        <label for="aprasas">Description:</label><br>
+        <label for="aprasas">Aprašymas:</label><br>
         <textarea id="aprasas" name="aprasas" rows="4" required><?php echo htmlspecialchars($yacht['aprasas']); ?></textarea><br><br>
 
-        <label for="kaina">Price (EUR):</label><br>
+        <label for="kaina">Kaina (EUR):</label><br>
         <input type="number" id="kaina" name="kaina" value="<?php echo htmlspecialchars($yacht['kaina']); ?>" min="0" step="0.01" required><br><br>
 
-        <label for="foto">Photo URL (leave empty to keep the current one):</label><br>
+        <label for="foto">Nuotraukos URL (palikite tuščią, jei norite išlaikyti dabartinę):</label><br>
         <input type="text" id="foto" name="foto" value="<?php echo htmlspecialchars($yacht['foto']); ?>"><br><br>
 
-        <input type="submit" value="Update Yacht">
+        <input type="submit" value="Atnaujinti Jachtą">
     </form>
 </section>
 

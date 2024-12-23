@@ -10,18 +10,18 @@ try {
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo "<p>Error fetching yachts: " . htmlspecialchars($e->getMessage()) . "</p>";
+    echo "<p>Klaida gaunant jachtas: " . htmlspecialchars($e->getMessage()) . "</p>";
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Yachts</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <title>Galimos jachtos</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Nuoroda į CSS failą -->
     <style>
-        /* Add basic styling for the yacht cards */
+        /* Pridėkite pagrindinį stilių jachtų kortelėms */
         .yachts-container {
             display: flex;
             flex-wrap: wrap;
@@ -83,32 +83,32 @@ try {
     </style>
 </head>
 <body>
-    <h1>Available Yachts</h1>
+    <h1>Galimos jachtos</h1>
     <div class="yachts-container">
         <?php if (count($result) > 0): ?>
             <?php foreach ($result as $row): ?>
                 <div class="yacht-card">
-                    <!-- Display multiple images -->
+                    <!-- Rodyti kelias nuotraukas -->
                     <div class="yacht-images">
                         <?php 
-                        $photos = explode(',', $row['foto']); // Split the 'foto' field by commas
+                        $photos = explode(',', $row['foto']); // Suskaidyti 'foto' lauką pagal kablelius
                         foreach ($photos as $photo): 
-                            $photo = trim($photo); // Remove extra spaces
-                            if ($photo): // Ensure the photo URL is not empty
+                            $photo = trim($photo); // Pašalinti papildomas tarpines
+                            if ($photo): // Užtikrinti, kad nuotraukos URL nėra tuščias
                         ?>
                             <img src="<?= htmlspecialchars($photo) ?>" 
                                  alt="<?= htmlspecialchars($row['pavadinimas']) ?>">
                         <?php endif; endforeach; ?>
                     </div>
-                    <!-- Yacht Details -->
+                    <!-- Jachtos Detalės -->
                     <h2><?= htmlspecialchars($row['pavadinimas']) ?></h2>
-                    <p><strong>Price:</strong> €<?= number_format($row['kaina'], 2) ?>/day</p>
+                    <p><strong>Kaina:</strong> €<?= number_format($row['kaina'], 2) ?>/diena</p>
                     <p><?= htmlspecialchars($row['aprasas']) ?></p>
-                    <a href="rezervacijos.php?jachta_id=<?= $row['id'] ?>" class="btn">Reserve Now</a>
+                    <a href="rezervacijos.php?jachta_id=<?= $row['id'] ?>" class="btn">Rezervuoti dabar</a>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>No yachts available at the moment.</p>
+            <p>Šiuo metu nėra galimų jachtų.</p>
         <?php endif; ?>
     </div>
 

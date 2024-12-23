@@ -91,24 +91,24 @@ try {
 
 <!-- Reviews Section -->
 <section id="reviews">
-    <h2>User Reviews</h2>
+    <h2>Naudotojų atsiliepimai</h2>
     <div class="reviews-list">
         <?php foreach ($reviews as $review): ?>
             <div class="review">
                 <h3><?php echo htmlspecialchars($review['user_name']); ?> - <?php echo htmlspecialchars($review['yacht_owner_name']); ?></h3>
-                <p><strong>Rating:</strong> <?php echo $review['ivertinimas']; ?> / 5</p>
-                <p><strong>Review:</strong> <?php echo nl2br(htmlspecialchars($review['tekstas'])); ?></p>
+                <p><strong>Vertinimas:</strong> <?php echo $review['ivertinimas']; ?> / 5</p>
+                <p><strong>Atsiliepimas:</strong> <?php echo nl2br(htmlspecialchars($review['tekstas'])); ?></p>
             </div>
         <?php endforeach; ?>
     </div>
 
     <!-- Review Submission Form (only visible to users) -->
     <?php if ($user_id >= 1000): ?> <!-- Only users can submit reviews -->
-        <h2>Leave a Review</h2>
+        <h2>Palik atsiliepimą:</h2>
         <form action="" method="POST">
-            <label for="yacht_owner_name">Yacht Owner Name:</label><br>
+            <label for="yacht_owner_name">Jachtos nuomotojo vardas:</label><br>
             <select id="yacht_owner_name" name="yacht_owner_name" required>
-                <option value="">Select a yacht owner</option>
+                <option value="">Pasirink savininką:</option>
                 <?php foreach ($yacht_owners as $owner): ?>
                     <option value="<?php echo htmlspecialchars($owner['varpav']); ?>">
                         <?php echo htmlspecialchars($owner['varpav']); ?>
@@ -116,16 +116,16 @@ try {
                 <?php endforeach; ?>
             </select><br><br>
 
-            <label for="rating">Rating (1-5):</label><br>
+            <label for="rating">Vertinimas (1-5):</label><br>
             <input type="number" id="rating" name="rating" min="1" max="5" required><br><br>
 
-            <label for="review_text">Review:</label><br>
+            <label for="review_text">Atsiliepimas:</label><br>
             <textarea id="review_text" name="review_text" rows="4" required></textarea><br><br>
 
-            <input type="submit" value="Submit Review">
+            <input type="submit" value="Pateikti">
         </form>
     <?php else: ?>
-        <p style="color: red;">Only users can submit reviews. Owners are not allowed to add reviews.</p>
+        <p style="color: red;">Tik naudotojai gali palikti atsiliepimus.</p>
     <?php endif; ?>
 </section>
 

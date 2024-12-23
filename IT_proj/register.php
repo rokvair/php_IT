@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 <!-- Registration Page HTML -->
 <main>
     <!-- Registration Form -->
-    <h2>Register</h2>
+    <h2>Registracija</h2>
 
     <!-- Display error message if there's any -->
     <?php if (!empty($error_message)): ?>
@@ -53,13 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <?php endif; ?>
 
     <form method="POST">
-        <label for="name">Name:</label><br>
+        <label for="name">Vardas:</label><br>
         <input type="text" name="name" id="name" required><br><br>
 
         <label for="email">Email:</label><br>
         <input type="email" name="email" id="email" required><br><br>
 
-        <label for="password">Password:</label><br>
+        <label for="password">Slaptažodis:</label><br>
         <input type="password" name="password" id="password" required><br><br>
 
         <button type="submit" name="register">Register</button>

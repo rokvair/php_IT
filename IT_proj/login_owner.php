@@ -56,15 +56,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p style="color: red;"><?php echo $error_message; ?></p>
     <?php endif; ?>
 
+    <h2>Savininkų prisijungimas</h2>
+
     <!-- Owner Login Form -->
     <form method="POST" action="">
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br><br>
 
-        <label for="password">Password:</label><br>
+        <label for="password">Slaptažodis:</label><br>
         <input type="password" id="password" name="password" required><br><br>
 
-        <input type="submit" value="Login">
+        <input type="submit" value="Prisijungti">
     </form>
 </main>
 

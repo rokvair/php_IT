@@ -37,12 +37,12 @@ if (isset($_GET['increase_price']) && is_numeric($_GET['increase_price'])) {
             $stmt->bindParam(':user_id', $user_id);
             $stmt->execute();
 
-            $success_message = "Price increased successfully!";
+            $success_message = "Kaina sėkmingai padidinta!";
         } else {
-            $error_message = "Yacht not found or you do not have permission to update the price.";
+            $error_message = "Jachta nerasta arba neturite teisės atnaujinti kainos.";
         }
     } catch (PDOException $e) {
-        $error_message = "Error updating price: " . $e->getMessage();
+        $error_message = "Klaida atnaujinant kainą: " . $e->getMessage();
     }
 }
 
@@ -58,9 +58,9 @@ if (isset($_GET['delete_yacht']) && is_numeric($_GET['delete_yacht'])) {
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
 
-        $success_message = "Yacht deleted successfully!";
+        $success_message = "Jachta sėkmingai ištrinta!";
     } catch (PDOException $e) {
-        $error_message = "Error deleting yacht: " . $e->getMessage();
+        $error_message = "Klaida trinant jachtą: " . $e->getMessage();
     }
 }
 
@@ -72,7 +72,7 @@ try {
     $stmt->execute();
     $yachts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $error_message = "Error fetching yachts: " . $e->getMessage();
+    $error_message = "Klaida gaunant jachtas: " . $e->getMessage();
 }
 
 ?>
@@ -87,34 +87,37 @@ try {
 
 <!-- Owner Dashboard - Display yachts -->
 <section id="owner_dashboard">
-    <h2>Your Yachts</h2>
+    <h2>Jūsų Jachtos</h2>
     
+    <!-- Button to add a new yacht -->
+    <p><a href="add_yacht.php" class="add-yacht-btn">Pridėti naują jachtą</a></p>
+
     <!-- Check if the owner has yachts -->
     <?php if (empty($yachts)): ?>
-        <p>You have no yachts posted. <a href="add_yacht.php">Add a New Yacht</a></p>
+        <p>Neturite jokių paskelbtų jachtų. <a href="add_yacht.php">Pridėti naują jachtą</a></p>
     <?php else: ?>
         <div class="yachts-list">
             <?php foreach ($yachts as $yacht): ?>
                 <div class="yacht">
                     <h3><?php echo htmlspecialchars($yacht['pavadinimas']); ?></h3>
-                    <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($yacht['aprasas'])); ?></p>
-                    <p><strong>Price:</strong> €<?php echo number_format($yacht['kaina'], 2); ?></p>
-                    <p><strong>Photos:</strong></p>
+                    <p><strong>Aprašymas:</strong> <?php echo nl2br(htmlspecialchars($yacht['aprasas'])); ?></p>
+                    <p><strong>Kaina:</strong> €<?php echo number_format($yacht['kaina'], 2); ?></p>
+                    <p><strong>Nuotraukos:</strong></p>
                     <div class="yacht-photos">
                         <?php 
                         $photos = explode(',', $yacht['foto']); // Split the photo URLs
                         foreach ($photos as $photo): 
                         ?>
-                            <img src="<?php echo htmlspecialchars(trim($photo)); ?>" alt="Yacht photo" width="100">
+                            <img src="<?php echo htmlspecialchars(trim($photo)); ?>" alt="Jachtos nuotrauka" width="100">
                         <?php endforeach; ?>
                     </div>
 
                     <!-- Button to increase the price by a certain percentage -->
-                    <a href="owner_dashboard.php?increase_price=<?php echo $yacht['id']; ?>" class="increase-price-btn">Increase Price by 10%</a>
-                    <a href="edit_yacht.php?id=<?php echo $yacht['id']; ?>" class="edit-btn">Edit Yacht</a>
+                    <a href="owner_dashboard.php?increase_price=<?php echo $yacht['id']; ?>" class="increase-price-btn">Padidinti kainą 10%</a>
+                    <a href="edit_yacht.php?id=<?php echo $yacht['id']; ?>" class="edit-btn">Redaguoti jachtą</a>
 
                     <!-- Button to delete the yacht -->
-                    <a href="owner_dashboard.php?delete_yacht=<?php echo $yacht['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this yacht?');">Delete Yacht</a>
+                    <a href="owner_dashboard.php?delete_yacht=<?php echo $yacht['id']; ?>" class="delete-btn" onclick="return confirm('Ar tikrai norite ištrinti šią jachtą?');">Ištrinti jachtą</a>
                 </div>
             <?php endforeach; ?>
         </div>
