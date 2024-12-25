@@ -2,6 +2,9 @@
 // Include the database connection and header
 require_once 'config.php';
 
+$success_message = '';
+$error_message = '';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     // Get form input and sanitize it
     $name = trim($_POST['name']);
@@ -10,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
     // Check if the input fields are not empty
     if (empty($name) || empty($email) || empty($password)) {
-        echo "<p>Please fill in all fields.</p>";
+        $error_message = "Please fill in all fields.";
     } else {
         try {
             // Prepare the SQL query to insert the data into the database
@@ -27,13 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
             // Execute the query
             if ($stmt->execute()) {
-                echo "<p>Registration successful!</p>";
+                $success_message = "Registracija pavyko!";
             } else {
-                echo "<p>Error: Could not register the user.</p>";
+                $error_message = "Error: Could not register the user.";
             }
         } catch (PDOException $e) {
             // Handle any errors
-            echo "<p>Error: " . $e->getMessage() . "</p>";
+            $error_message = "Error: " . $e->getMessage();
         }
     }
 }
@@ -47,7 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <!-- Registration Form -->
     <h2>Registracija</h2>
 
-    <!-- Display error message if there's any -->
+    <!-- Display success or error message -->
+    <?php if (!empty($success_message)): ?>
+        <p style="color: green;"><?php echo $success_message; ?></p>
+    <?php endif; ?>
     <?php if (!empty($error_message)): ?>
         <p style="color: red;"><?php echo $error_message; ?></p>
     <?php endif; ?>

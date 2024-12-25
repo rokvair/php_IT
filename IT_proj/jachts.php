@@ -3,9 +3,16 @@
 include('config.php');
 include('header.php');
 
-// Fetch all yachts from the database using PDO
+// Fetch all yachts, their owners, and their average ratings
 try {
-    $sql = "SELECT * FROM jachtos";
+    $sql = "
+        SELECT j.*, n.varpav, 
+               (SELECT AVG(a.ivertinimas) 
+                FROM atsiliepimai a 
+                WHERE a.nuomotojas = n.id) AS average_rating
+        FROM jachtos j
+        LEFT JOIN nuomotojai n ON j.savId = n.id
+    ";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -104,6 +111,10 @@ try {
                     <h2><?= htmlspecialchars($row['pavadinimas']) ?></h2>
                     <p><strong>Kaina:</strong> €<?= number_format($row['kaina'], 2) ?>/diena</p>
                     <p><?= htmlspecialchars($row['aprasas']) ?></p>
+                    <p><strong>Savininko vardas:</strong> <?= htmlspecialchars($row['varpav'] ?? 'Nežinomas') ?></p>
+                    <p><strong>Savininko Įvertinimas:</strong> 
+                        <?= $row['average_rating'] ? number_format($row['average_rating'], 2) : 'Nėra įvertinimų' ?>
+                    </p>
                     <a href="rezervacijos.php?jachta_id=<?= $row['id'] ?>" class="btn">Rezervuoti dabar</a>
                 </div>
             <?php endforeach; ?>
